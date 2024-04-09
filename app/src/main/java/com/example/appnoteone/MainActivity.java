@@ -172,35 +172,35 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     private void showPopUp(CardView cardView) {
         PopupMenu popupMenu = new PopupMenu(this, cardView);
         popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.inflate(R.menu.popup_menu);
+       // popupMenu.inflate(R.menu.popup_menu);
         popupMenu.show();
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.pin:
-                if(selectNotes.isPinned()){
-                    database.mainDAO().pin(selectNotes.getID(),false);
-                    Toast.makeText(MainActivity.this, "Đã bỏ ghim", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    database.mainDAO().pin(selectNotes.getID(), true);
-                    Toast.makeText(MainActivity.this, "Đã ghim", Toast.LENGTH_LONG).show();
-                }
+        int itemId = item.getItemId();
+        if (itemId == R.id.pin ) {
+            if(selectNotes.isPinned()){
+                database.mainDAO().pin(selectNotes.getID(),false);
+                Toast.makeText(MainActivity.this, "Đã bỏ ghim", Toast.LENGTH_LONG).show();
+            }
+            else {
+                database.mainDAO().pin(selectNotes.getID(), true);
+                Toast.makeText(MainActivity.this, "Đã ghim", Toast.LENGTH_LONG).show();
+            }
 
-                notes.clear();
-                notes.addAll(database.mainDAO().getAll());
-                notesListAdapter.notifyDataSetChanged();
-                return true;
-            case R.id.delete:
-                database.mainDAO().delete(selectNotes);
-                notes.remove(selectNotes);
-                notesListAdapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "Đã xóa", Toast.LENGTH_LONG).show();
-                return  true;
-            default:
-                return false;
+            notes.clear();
+            notes.addAll(database.mainDAO().getAll());
+            notesListAdapter.notifyDataSetChanged();
+            return true;
+        } else if (itemId == R.id.delete) {
+            database.mainDAO().delete(selectNotes);
+            notes.remove(selectNotes);
+            notesListAdapter.notifyDataSetChanged();
+            Toast.makeText(MainActivity.this, "Đã xóa", Toast.LENGTH_LONG).show();
+            return  true;
+        } else {
+            return false;
         }
     }
 }
